@@ -591,7 +591,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun armarGenerosMenu() {
-        // --- Menú lateral (lista vertical) ---
         binding.grupoGenerosMenu.removeAllViews()
 
         binding.grupoGenerosMenu.addView(crearOpcionMenu("Todos", generoSeleccionado == null) {
@@ -601,8 +600,7 @@ class MainActivity : AppCompatActivity() {
             cerrarMenu()
         })
 
-        val generos = catalogoCompleto.flatMap { it.genres }.distinct().sorted()
-        generos.forEach { genero ->
+        catalogoCompleto.flatMap { it.genres }.distinct().sorted().forEach { genero ->
             binding.grupoGenerosMenu.addView(crearOpcionMenu(genero, generoSeleccionado == genero) {
                 generoSeleccionado = genero
                 armarGenerosMenu()
@@ -610,44 +608,6 @@ class MainActivity : AppCompatActivity() {
                 cerrarMenu()
             })
         }
-
-        // --- Chips horizontales del Home (estilo promo) ---
-        binding.grupoGenerosChips.removeAllViews()
-
-        binding.grupoGenerosChips.addView(crearChip("TODO", generoSeleccionado == null) {
-            generoSeleccionado = null
-            armarGenerosMenu()
-            aplicarFiltros()
-        })
-
-        generos.forEach { genero ->
-            binding.grupoGenerosChips.addView(crearChip(genero.uppercase(), generoSeleccionado == genero) {
-                generoSeleccionado = genero
-                armarGenerosMenu()
-                aplicarFiltros()
-            })
-        }
-    }
-
-    private fun crearChip(texto: String, activo: Boolean, alTocar: () -> Unit): View {
-        val tv = android.widget.TextView(this)
-        tv.text = texto
-        tv.textSize = 12f
-        tv.setPadding(28, 14, 28, 14)
-        val params = android.widget.LinearLayout.LayoutParams(
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.marginEnd = 10
-        tv.layoutParams = params
-        tv.background = resources.getDrawable(
-            if (activo) R.drawable.bg_chip_selected else R.drawable.bg_chip_unselected,
-            theme
-        )
-        tv.setTextColor(resources.getColor(if (activo) R.color.white else R.color.muted, theme))
-        if (activo) tv.setTypeface(null, android.graphics.Typeface.BOLD)
-        tv.setOnClickListener { alTocar() }
-        return tv
     }
 
     private fun crearOpcionMenu(texto: String, activo: Boolean, alTocar: () -> Unit): View {
