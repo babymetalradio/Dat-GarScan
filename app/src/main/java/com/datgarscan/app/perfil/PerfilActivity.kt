@@ -48,6 +48,29 @@ class PerfilActivity : AppCompatActivity() {
         }
         binding.btnCerrarSesion.setOnClickListener { confirmarCerrarSesion() }
 
+        // Bottom nav
+        binding.navInicio.setOnClickListener {
+            startActivity(android.content.Intent(this, com.datgarscan.app.MainActivity::class.java).apply {
+                flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            })
+            finish()
+        }
+        binding.navExplorar.setOnClickListener {
+            startActivity(android.content.Intent(this, com.datgarscan.app.MainActivity::class.java).apply {
+                flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            })
+            finish()
+        }
+        binding.navFavoritos.setOnClickListener {
+            startActivity(com.datgarscan.app.favoritos.FavoritosActivity.crearIntent(this))
+        }
+        binding.navSeries.setOnClickListener {
+            startActivity(com.datgarscan.app.historial.HistorialActivity.crearIntent(this))
+        }
+        binding.navPerfil.setOnClickListener {
+            // Ya estamos aquí
+        }
+
         // Muestra de inmediato lo que ya sabemos, sin esperar al servidor
         binding.tvUsername.text = SesionManager.usernameEnMemoria ?: ""
         binding.tvInicial.text = (SesionManager.usernameEnMemoria ?: "?").take(1).uppercase()
@@ -80,7 +103,7 @@ class PerfilActivity : AppCompatActivity() {
         binding.tvNumCapitulos.text = perfil.capitulos_leidos.toString()
         binding.tvNumSeries.text = perfil.series_leidas.toString()
 
-        binding.btnTienda.text = "Tienda · ${perfil.garritas} garritas"
+        binding.tvTextoTienda.text = "Tienda Garritas · ${perfil.garritas}"
 
         binding.tvEtiquetaSinAnuncios.visibility =
             if (perfil.sin_anuncios) View.VISIBLE else View.GONE
